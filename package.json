@@ -1,0 +1,47 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": ">=18.17.1"
+  },
+  "scripts": {
+    "test": "npm run test:mean && npm run test:median && npm run test:mode npm run test:auth && npm run test:infra",
+    "test:mode": "jest --testPathPattern=software/ModeFunction",
+    "test:mean": "cd software/MeanFunction && mvn test",
+    "test:median": "cd software/MedianFunction && mvn test",
+    "test:infra": "cd infrastructure && mvn test",
+    "test:auth": "jest --testPathPattern=software/AuthorizerFunction",
+    "bootstrap": "cd infrastructure && cdk bootstrap",
+    "build": "npm run build:common && npm run test && npm run synth",
+    "build:common": "cd software/Utils && mvn install",
+    "synth": "cd infrastructure && cdk synth",
+    "invoke:mode": "sam local invoke -t ./infrastructure/cdk.out/StatisticsApiStack.template.json ModeFunction -e ./software/ModeFunction/event.json",
+    "invoke:mean": "sam local invoke -t ./infrastructure/cdk.out/StatisticsApiStack.template.json MeanFunction -e ./software/MeanFunction/event.json",
+    "invoke:median": "sam local invoke -t ./infrastructure/cdk.out/StatisticsApiStack.template.json MedianFunction -e ./software/MedianFunction/event.json",
+    "start-api": "sam local start-api -t ./infrastructure/cdk.out/StatisticsApiStack.template.json",
+    "deploy": "cd infrastructure && cdk deploy --require-approval never",
+    "test:integration": "jest --testPathPattern=integration-tests/",
+    "destroy": "cd infrastructure && cdk destroy",
+    "clean": "sudo rm -rf software/MedianFunction/target/ && sudo rm -rf software/MeanFunction/target/"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
+    "@types/decimal.js": "^7.4.0",
+    "@types/jest": "^29.5.3",
+    "aws-cdk": "^2.91.0",
+    "aws-sdk": "^2.1436.0",
+    "aws-sdk-client-mock": "^2.0.0",
+    "axios": "^1.4.0",
+    "maven": "^5.0.0",
+    "ts-jest": "^29.1.1"
+  },
+  "dependencies": {
+    "@middy/core": "^4.6.0",
+    "@middy/http-json-body-parser": "^4.6.0",
+    "decimal.js": "^10.4.3",
+    "json-schema-to-ts": "^2.9.2"
+  }
+}

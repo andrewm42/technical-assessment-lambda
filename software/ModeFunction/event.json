@@ -1,0 +1,8 @@
+{
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "abc123"
+  },
+  "body": "[1.1, 2, 5.5, 4, 5, 4]",
+  "isBase64Encoded": false
+}
